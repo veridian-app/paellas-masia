@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #C8102E;
+  --color-primary-light: #E63946;
+  --color-primary-dark: #9B0D23;
+  --color-accent: #F4A261;
+  --color-accent-dark: #E76F51;
+  --color-background: #FFFBF5;
+  --color-surface: #FFFFFF;
+  --color-surface-warm: #FFF8F0;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --color-gold: #D4A853;
+  --color-gold-light: #F0D78C;
+
+  --shadow-card: 0 20px 40px -5px rgba(0, 0, 0, 0.08), 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 25px 50px -12px rgba(200, 16, 46, 0.15);
+  --shadow-glow: 0 0 40px rgba(200, 16, 46, 0.12);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(200, 16, 46, 0.15);
+  color: var(--color-primary-dark);
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  border-radius: 1.5rem;
+  z-index: 1;
+}
+
+/* Font display class */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated underline */
+.animated-underline {
+  position: relative;
+}
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* Pulse animation for CTA */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.4); }
+  50% { box-shadow: 0 0 20px 10px rgba(200, 16, 46, 0); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Map pulse animation */
+@keyframes map-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
