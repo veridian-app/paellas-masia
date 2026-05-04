@@ -113,8 +113,8 @@ export const PAELLAS = [
     },
     {
         id: 'arroz-negro',
-        src: '/images/paellas-nobg/arroz-negro-nuevo.jpeg?v=1',
-        srcTransparent: '/images/paellas-nobg/arroz-negro-nuevo.jpeg?v=1',
+        src: '/images/paellas-nobg/arroz-negro-nuevo.png?v=2',
+        srcTransparent: '/images/paellas-nobg/arroz-negro-nuevo.png?v=2',
         title: 'Arroz Negro',
         description: 'Tradicional arroz negro con sepia, calamar y su tinta.',
         P3: 17, P25: 11,
@@ -124,8 +124,8 @@ export const PAELLAS = [
     },
     {
         id: 'torreznos-pimientos',
-        src: '/images/paellas-nobg/torreznos-nuevo.jpeg?v=1',
-        srcTransparent: '/images/paellas-nobg/torreznos-nuevo.jpeg?v=1',
+        src: '/images/paellas-nobg/torreznos-nuevo.png?v=2',
+        srcTransparent: '/images/paellas-nobg/torreznos-nuevo.png?v=2',
         title: 'Arroz de Torreznos y Pimientos del Piquillo',
         description: 'Torreznos crujientes con pimientos del piquillo sobre un arroz con cuerpo.',
         P3: 15, P25: 10,
