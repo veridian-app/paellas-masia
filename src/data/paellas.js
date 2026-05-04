@@ -158,4 +158,4 @@ export const TIME_SLOTS = [
     '12:45', '13:15', '13:45', '14:15', '14:45', '15:15', '15:45'
 ];
 
-export const WHATSAPP_NUMBER = '34615614695';
+export const WHATSAPP_NUMBER = '34717771734';

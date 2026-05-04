@@ -39,9 +39,9 @@ const Footer = () => {
                         <h3 className="text-lg font-bold mb-4 text-white">Contacto</h3>
                         <ul className="space-y-3">
                             <li>
-                                <a href="tel:+34615614695" className="flex items-center gap-3 text-gray-400 hover:text-accent transition-colors group">
+                                <a href="tel:+34717771734" className="flex items-center gap-3 text-gray-400 hover:text-accent transition-colors group">
                                     <Phone className="w-4 h-4 text-primary group-hover:text-accent transition-colors" />
-                                    <span className="text-sm">+34 615 614 695</span>
+                                    <span className="text-sm">+34 717 771 734</span>
                                 </a>
                             </li>
                             <li>
@@ -103,7 +103,7 @@ const Footer = () => {
                             <p className="text-xs text-gray-400 leading-relaxed">
                                 🥘 ¿Más de 25 comensales?
                                 <br />
-                                <a href="https://wa.me/34615614695" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">
+                                <a href="https://wa.me/34717771734" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">
                                     Contáctanos por WhatsApp
                                 </a>
                             </p>

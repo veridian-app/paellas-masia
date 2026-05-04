@@ -132,7 +132,7 @@ const Navbar = ({ onOpenOrder }) => {
                                     Pedir Ahora
                                 </button>
                                 <a
-                                    href="tel:+34615614695"
+                                    href="tel:+34717771734"
                                     className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-2xl text-base font-medium hover:border-primary hover:text-primary transition-all"
                                 >
                                     <Phone className="w-5 h-5" />

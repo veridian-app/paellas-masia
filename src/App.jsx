@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import OrderForm from './components/OrderForm';
 import PaymentStatusModal from './components/PaymentStatusModal';
 import AdminDashboard from './components/AdminDashboard';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
     const [orderOpen, setOrderOpen] = useState(false);
@@ -37,6 +38,7 @@ function App() {
                 preselectedPaellaId={preselectedPaella}
             />
             <PaymentStatusModal />
+            <WhatsAppButton />
         </div>
     );
 }
