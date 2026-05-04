@@ -11,21 +11,31 @@ import AdminDashboard from './components/AdminDashboard';
 
 function App() {
     const [orderOpen, setOrderOpen] = useState(false);
+    const [preselectedPaella, setPreselectedPaella] = useState(null);
 
     // Simple routing for the admin dashboard
     if (window.location.pathname === '/admin') {
         return <AdminDashboard />;
     }
 
+    const openOrder = (paellaId = null) => {
+        setPreselectedPaella(paellaId);
+        setOrderOpen(true);
+    };
+
     return (
         <div className="min-h-screen bg-background">
-            <Navbar onOpenOrder={() => setOrderOpen(true)} />
-            <Hero onOpenOrder={() => setOrderOpen(true)} />
-            <Products onOpenOrder={() => setOrderOpen(true)} />
+            <Navbar onOpenOrder={() => openOrder()} />
+            <Hero onOpenOrder={openOrder} />
+            <Products onOpenOrder={openOrder} />
             <DeliveryMap />
             <About />
             <Footer />
-            <OrderForm isOpen={orderOpen} onClose={() => setOrderOpen(false)} />
+            <OrderForm
+                isOpen={orderOpen}
+                onClose={() => { setOrderOpen(false); setPreselectedPaella(null); }}
+                preselectedPaellaId={preselectedPaella}
+            />
             <PaymentStatusModal />
         </div>
     );

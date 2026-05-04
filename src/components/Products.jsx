@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ChevronRight, Flame, Filter } from 'lucide-react';
-import { PAELLAS, CATEGORIES } from '../data/paellas';
+import { PAELLAS, CATEGORIES, getMinPrice } from '../data/paellas';
 
 const Products = ({ onOpenOrder }) => {
     const [activeFilter, setActiveFilter] = useState('all');
@@ -31,7 +31,7 @@ const Products = ({ onOpenOrder }) => {
                             Arroces Artesanales
                         </h2>
                         <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                            Cada paella, un plato único. Cocinadas con productos frescos de la huerta valenciana.
+                            Cada plato, una experiencia única. Te los llevamos a casa y luego los recogemos. Solo ingredientes frescos de la huerta valenciana.
                         </p>
                     </motion.div>
                 </div>
@@ -113,11 +113,12 @@ const Products = ({ onOpenOrder }) => {
                                 {/* Price + CTA */}
                                 <div className="mt-auto pt-2 md:pt-3 border-t border-gray-100 flex items-center justify-between">
                                     <div>
-                                        <span className="font-bold text-lg md:text-xl text-primary">{product.price}€</span>
-                                        <span className="text-gray-400 text-[10px] md:text-xs block">/ración</span>
+                                        <span className="text-gray-400 text-[10px] md:text-xs">desde </span>
+                                        <span className="font-bold text-lg md:text-xl text-primary">{getMinPrice(product)}€</span>
+                                        <span className="text-gray-400 text-[10px] md:text-xs block">/persona</span>
                                     </div>
                                     <button
-                                        onClick={onOpenOrder}
+                                        onClick={() => onOpenOrder(product.id)}
                                         className="flex items-center gap-1 text-xs md:text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors bg-gray-50 group-hover:bg-red-50 px-3 py-1.5 rounded-full"
                                     >
                                         Pedir

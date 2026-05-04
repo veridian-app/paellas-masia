@@ -24,8 +24,8 @@ const Footer = () => {
                             className="h-16 w-auto mb-4 brightness-0 invert"
                         />
                         <p className="text-gray-400 text-sm leading-relaxed">
-                            Paellas y arroces artesanales a domicilio. 
-                            Cocinados con pasión y los mejores ingredientes de km0.
+                            Arroces artesanales a domicilio. 
+                            Te los llevamos a casa y luego los recogemos. Ingredientes Km0 y cocinados con pasión.
                         </p>
                     </motion.div>
 

@@ -65,7 +65,7 @@ const PaellaCard = ({ item, index, rotation, count, radiusX, radiusY, onSelect }
                 {/* Title Label */}
                 <div className={`absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-gray-100 flex items-center gap-2 transition-all duration-300 ${isActive ? 'scale-110 opacity-100' : 'scale-90 opacity-80'}`}>
                     <span className="text-gray-900 font-bold text-xs md:text-sm whitespace-nowrap">{item.title}</span>
-                    {isActive && <span className="text-primary font-bold text-xs md:text-sm">{item.price}€</span>}
+                    {isActive && <span className="text-primary font-bold text-xs md:text-sm">desde {item.P25}€</span>}
                 </div>
             </div>
         </motion.div>

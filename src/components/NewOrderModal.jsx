@@ -2,23 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, User, Phone, Mail, MapPin, Calendar, Clock,
   CreditCard, Banknote, Gift, Link, CheckCircle, Loader, ShoppingBag } from 'lucide-react';
+import { PAELLAS, TIME_SLOTS, getPricePerPerson } from '../data/paellas';
 
-// ── Product catalogue (mirrors paellas.js) ───────────────────────────────────
-const PRODUCTS = [
-  { id: 'valenciana',        title: 'Paella Valenciana',              price: 12 },
-  { id: 'marisco',           title: 'Paella de Marisco',              price: 16 },
-  { id: 'senyoret',          title: 'Arroz del Señoret',              price: 14 },
-  { id: 'fideua-marisco',    title: 'Fideuá de Marisco',              price: 17 },
-  { id: 'costillas-coliflor',title: 'Arroz Costillas y Coliflor',     price: 13 },
-  { id: 'pato-foie-setas',   title: 'Arroz Pato, Setas y Foie',       price: 18 },
-  { id: 'entrecot-calabaza', title: 'Arroz Entrecot y Calabaza',      price: 16 },
-  { id: 'carabineros-vieiras','title': 'Arroz Carabineros y Vieiras', price: 20 },
-  { id: 'secreto-setas-foie','title': 'Arroz Secreto, Setas y Foie',  price: 16 },
-  { id: 'arroz-negro',       title: 'Arroz Negro',                    price: 15 },
-  { id: 'torreznos-pimientos','title': 'Arroz Torreznos y Piquillo',  price: 12 },
-];
 
-const TIME_SLOTS = ['12:45','13:15','13:45','14:15','14:45','15:15','15:45'];
 
 function genOrderId() {
   const ts = Date.now().toString().slice(-8);          // 8 digits
@@ -51,8 +37,8 @@ export default function NewOrderModal({ isOpen, onClose, onCreated }) {
   }, [isOpen]);
 
   const total = Object.entries(cart).reduce((s, [id, qty]) => {
-    const p = PRODUCTS.find(p => p.id === id);
-    return s + (p ? p.price * qty : 0);
+    const p = PAELLAS.find(p => p.id === id);
+    return s + (p ? getPricePerPerson(p, qty) * qty : 0);
   }, 0);
 
   function setQty(id, delta) {
@@ -175,12 +161,14 @@ export default function NewOrderModal({ isOpen, onClose, onCreated }) {
             {step === 1 && (
               <div className="space-y-2">
                 <p className="text-xs text-gray-400 mb-3">Selecciona raciones por producto</p>
-                {PRODUCTS.map(p => (
+                {PAELLAS.map(p => (
                   <div key={p.id} className={`flex items-center justify-between p-3 rounded-xl border transition-all
                     ${cart[p.id] ? 'border-orange-300 bg-orange-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
                     <div>
                       <div className="font-medium text-sm text-gray-900">{p.title}</div>
-                      <div className="text-xs text-gray-400">{p.price}€ / ración</div>
+                      <div className="text-xs text-gray-400">
+                        {cart[p.id] ? `${getPricePerPerson(p, cart[p.id])}€ / persona` : `desde ${p.P25}€ / persona`}
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setQty(p.id, -1)} disabled={!cart[p.id]}
@@ -251,11 +239,11 @@ export default function NewOrderModal({ isOpen, onClose, onCreated }) {
                 <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                   <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Resumen del pedido</div>
                   {Object.entries(cart).map(([id, qty]) => {
-                    const p = PRODUCTS.find(x => x.id === id);
+                    const p = PAELLAS.find(x => x.id === id);
                     return p ? (
                       <div key={id} className="flex justify-between text-sm py-0.5">
-                        <span className="text-gray-700">{p.title} ×{qty}</span>
-                        <span className="font-medium">{(p.price * qty).toFixed(2)}€</span>
+                        <span className="text-gray-700">{p.title} ×{qty} pers.</span>
+                        <span className="font-medium">{(getPricePerPerson(p, qty) * qty).toFixed(2)}€</span>
                       </div>
                     ) : null;
                   })}

@@ -124,7 +124,7 @@ const Hero = ({ onOpenOrder }) => {
                         <span className="font-display">Arroces Tradicionales e Innovadores</span>
                         <br />
                         <span className="relative inline-block gradient-text">
-                            Directos a Tu Mesa
+                            a Domicilio
                             <svg className="absolute -bottom-2 left-0 w-full h-3 text-accent/40 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="6" fill="transparent" />
                             </svg>
@@ -132,7 +132,7 @@ const Hero = ({ onOpenOrder }) => {
                     </h1>
 
                     <p className="text-gray-500 text-lg md:text-xl max-w-xl leading-relaxed mb-6">
-                        Hechos con pasión y los mejores ingredientes Km0. Entrega a domicilio en la zona noroeste de Valencia.
+                        Hechos con pasión y los mejores ingredientes Km0. Te los llevamos a casa y luego los recogemos. Zona noroeste de Valencia.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -263,14 +263,14 @@ const Hero = ({ onOpenOrder }) => {
 
                                     <div className="flex items-center justify-between gap-4 w-full">
                                         <div className="flex flex-col items-start">
-                                            <span className="text-xs text-gray-400 uppercase tracking-wider">Precio / Ración</span>
-                                            <span className="text-3xl font-bold text-primary">{selectedPaella.price}€</span>
+                                            <span className="text-xs text-gray-400 uppercase tracking-wider">Desde / Persona</span>
+                                            <span className="text-3xl font-bold text-primary">{selectedPaella.P25}€</span>
                                         </div>
                                         <button
-                                            onClick={() => { setSelectedPaella(null); onOpenOrder(); }}
+                                            onClick={() => { setSelectedPaella(null); onOpenOrder(selectedPaella.id); }}
                                             className="flex-1 max-w-[200px] bg-primary text-white py-3 rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
                                         >
-                                            🥘 Pedir
+                                            🥘 Pedir a domicilio
                                         </button>
                                     </div>
                                 </div>

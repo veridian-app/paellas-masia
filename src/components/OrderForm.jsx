@@ -5,16 +5,7 @@ import {
     ChevronRight, ChevronLeft, Check, Plus, Minus, AlertCircle,
     Phone, Mail, Clock, MessageCircle, Users
 } from 'lucide-react';
-import { PAELLAS, TIME_SLOTS, WHATSAPP_NUMBER } from '../data/paellas';
-
-const getPricePerPortion = (basePrice, qty) => {
-    if (!qty || qty <= 3) return basePrice;
-    const extras = qty - 3;
-    const discountPercent = extras * 2.25;
-    const exactPrice = basePrice * (1 - (discountPercent / 100));
-    // Redondear al 0.25 más cercano
-    return Math.round(exactPrice * 4) / 4;
-};
+import { PAELLAS, TIME_SLOTS, WHATSAPP_NUMBER, getPricePerPerson } from '../data/paellas';
 
 const STEPS = [
     { id: 1, label: 'Productos', icon: ShoppingBag },
@@ -24,9 +15,9 @@ const STEPS = [
     { id: 5, label: 'Resumen', icon: FileText },
 ];
 
-const OrderForm = ({ isOpen, onClose }) => {
+const OrderForm = ({ isOpen, onClose, preselectedPaellaId }) => {
     const [step, setStep] = useState(1);
-    // cart: { [id]: number } — número de raciones por paella
+    // cart: { [id]: number } — número de personas por paella
     const [cart, setCart] = useState({});
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [formData, setFormData] = useState({
@@ -48,16 +39,27 @@ const OrderForm = ({ isOpen, onClose }) => {
         return Object.entries(cart).reduce((sum, [id, qty]) => {
             const p = PAELLAS.find(p => p.id === id);
             if (!p) return sum;
-            const price = getPricePerPortion(p.price, qty);
-            return sum + (price * qty);
+            const pricePerPerson = getPricePerPerson(p, qty);
+            return sum + (pricePerPerson * qty);
         }, 0);
     }, [cart]);
 
     const totalPaellas = useMemo(() => {
         return Object.keys(cart).length;
     }, [cart]);
+    // Pre-select paella if passed from outside
+    const [lastPreselected, setLastPreselected] = useState(null);
+    if (isOpen && preselectedPaellaId && preselectedPaellaId !== lastPreselected) {
+        setLastPreselected(preselectedPaellaId);
+        if (!cart[preselectedPaellaId]) {
+            setCart(prev => ({ ...prev, [preselectedPaellaId]: 3 }));
+        }
+    }
+    if (!isOpen && lastPreselected) {
+        setLastPreselected(null);
+    }
 
-    // Añadir paella al carrito con mínimo 3 raciones
+    // Añadir paella al carrito con mínimo 3 personas
     const initPaella = (id) => {
         setCart(prev => ({ ...prev, [id]: 3 }));
     };
@@ -105,8 +107,8 @@ const OrderForm = ({ isOpen, onClose }) => {
         const items = Object.entries(cart).map(([id, qty]) => {
             const p = PAELLAS.find(p => p.id === id);
             if (!p) return '';
-            const pricePerPortion = getPricePerPortion(p.price, qty);
-            return `• ${p.title} — ${qty} raciones (${pricePerPortion}€/ración = ${pricePerPortion * qty}€)`;
+            const pricePerPerson = getPricePerPerson(p, qty);
+            return `• ${p.title} — ${qty} personas (${pricePerPerson}€/persona = ${(pricePerPerson * qty).toFixed(2)}€)`;
         }).join('\n');
 
         const message =
@@ -117,10 +119,10 @@ const OrderForm = ({ isOpen, onClose }) => {
             `📍 *Dirección:* ${formData.address}\n\n` +
             `📅 *Fecha:* ${formData.date}\n` +
             `🕐 *Hora de entrega:* ${formData.time} (±10 min)\n` +
-            `👥 *Total raciones:* ${totalRaciones}\n\n` +
+            `👥 *Total personas:* ${totalRaciones}\n\n` +
             `🍚 *Pedido:*\n${items}\n\n` +
             `💰 *Total estimado:* ${totalPrice}€\n` +
-            `💳 *Método de pago:* ${formData.paymentMethod === 'efectivo' ? 'Efectivo' : formData.paymentMethod === 'bizum' ? 'Bizum' : 'Tarjeta (Online)'}\n` +
+            `💳 *Método de pago:* ${formData.paymentMethod === 'efectivo' ? 'Efectivo' : 'Tarjeta (Online)'}\n` +
             (formData.notes ? `\n📝 *Notas:* ${formData.notes}\n` : '') +
             `\n_Pendiente de confirmación_`;
 
@@ -296,9 +298,9 @@ const OrderForm = ({ isOpen, onClose }) => {
                                         <Users className="w-5 h-5 text-accent-dark shrink-0 mt-0.5" />
                                         <div>
                                             <p className="font-semibold text-gray-800 text-sm">Añade las paellas que quieras</p>
-                                            <p className="text-xs text-gray-500 mt-0.5">
-                                                Para cada paella elige cuántas raciones necesitas (mínimo 3 por paella). Puedes combinar varios tipos.
-                                            </p>
+                                        <div className="text-xs text-gray-400 mt-0.5">
+                                                Para cada paella elige cuántas personas (mínimo 3 por paella, máximo 25). Puedes combinar varios tipos.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -328,15 +330,15 @@ const OrderForm = ({ isOpen, onClose }) => {
                                                         <div className="flex-1 min-w-0">
                                                             <h4 className="font-semibold text-gray-900 text-sm truncate">{paella.title}</h4>
                                                             <span className="text-primary font-bold text-sm">
-                                                                {isInCart && qty > 3 ? (
+                                                                {isInCart ? (
                                                                     <>
-                                                                        <span className="line-through text-gray-400 mr-1 text-xs">{paella.price}€</span>
-                                                                        {getPricePerPortion(paella.price, qty)}€
+                                                                        {qty > 3 && <span className="line-through text-gray-400 mr-1 text-xs">{paella.P3}€</span>}
+                                                                        {getPricePerPerson(paella, qty)}€
                                                                     </>
                                                                 ) : (
-                                                                    `${paella.price}€`
+                                                                    <><span className="text-gray-400 text-xs font-normal">desde </span>{paella.P25}€</>
                                                                 )}
-                                                                <span className="text-gray-400 font-normal text-xs">/ración</span>
+                                                                <span className="text-gray-400 font-normal text-xs">/persona</span>
                                                             </span>
                                                         </div>
                                                         <div className="shrink-0">
@@ -388,7 +390,7 @@ const OrderForm = ({ isOpen, onClose }) => {
                                                                     <div className="text-center min-w-[52px]">
                                                                         <span className="text-xl font-bold text-gray-900">{qty}</span>
                                                                         <p className="text-[10px] text-gray-400 leading-none">
-                                                                            {qty === 1 ? 'ración' : 'raciones'}
+                                                                            {qty === 1 ? 'persona' : 'personas'}
                                                                         </p>
                                                                     </div>
                                                                     <button
@@ -570,31 +572,11 @@ const OrderForm = ({ isOpen, onClose }) => {
                                                 )}
                                             </button>
 
-                                            <button
-                                                onClick={() => updateField('paymentMethod', 'bizum')}
-                                                className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-200 ${
-                                                    formData.paymentMethod === 'bizum'
-                                                        ? 'border-primary bg-red-50 shadow-md'
-                                                        : 'border-gray-200 hover:border-gray-300'
-                                                }`}
-                                            >
-                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
-                                                    formData.paymentMethod === 'bizum' ? 'bg-primary/10' : 'bg-gray-100'
-                                                }`}>
-                                                    📱
-                                                </div>
-                                                <div className="text-left">
-                                                    <span className="font-bold text-gray-900">Bizum</span>
-                                                    <p className="text-xs text-gray-500">Transferencia instantánea</p>
-                                                </div>
-                                                {formData.paymentMethod === 'bizum' && (
-                                                    <Check className="ml-auto w-5 h-5 text-primary" />
-                                                )}
-                                            </button>
+
 
                                             <button
                                                 onClick={() => updateField('paymentMethod', 'tarjeta')}
-                                                className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-200 sm:col-span-2 ${
+                                                className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-200 ${
                                                     formData.paymentMethod === 'tarjeta'
                                                         ? 'border-primary bg-red-50 shadow-md'
                                                         : 'border-gray-200 hover:border-gray-300'
@@ -652,11 +634,11 @@ const OrderForm = ({ isOpen, onClose }) => {
                                                         <div>
                                                             <span className="font-medium text-gray-800">{p.title}</span>
                                                             <span className="text-gray-400 ml-2">
-                                                                · {qty} {qty === 1 ? 'ración' : 'raciones'} 
-                                                                {qty > 3 && <span className="text-green-600 ml-1 text-xs">(Dto. aplicado)</span>}
+                                                                · {qty} {qty === 1 ? 'persona' : 'personas'}
+                                                                ({getPricePerPerson(p, qty)}€/pers.)
                                                             </span>
                                                         </div>
-                                                        <span className="font-semibold text-gray-900">{getPricePerPortion(p.price, qty) * qty}€</span>
+                                                        <span className="font-semibold text-gray-900">{(getPricePerPerson(p, qty) * qty).toFixed(2)}€</span>
                                                     </div>
                                                 );
                                             })}
@@ -676,7 +658,7 @@ const OrderForm = ({ isOpen, onClose }) => {
                                             <div><span className="text-gray-500">Nombre:</span> <span className="font-medium">{formData.name}</span></div>
                                             <div><span className="text-gray-500">Teléfono:</span> <span className="font-medium">{formData.phone}</span></div>
                                             <div><span className="text-gray-500">Email:</span> <span className="font-medium">{formData.email}</span></div>
-                                            <div><span className="text-gray-500">Raciones totales:</span> <span className="font-medium">{totalRaciones}</span></div>
+                                            <div><span className="text-gray-500">Total personas:</span> <span className="font-medium">{totalRaciones}</span></div>
                                         </div>
                                         <div><span className="text-gray-500">Dirección:</span> <span className="font-medium">{formData.address}</span></div>
                                         <div className="grid grid-cols-2 gap-2">
@@ -686,7 +668,7 @@ const OrderForm = ({ isOpen, onClose }) => {
                                         <div>
                                             <span className="text-gray-500">Pago:</span>{' '}
                                             <span className="font-medium">
-                                                {formData.paymentMethod === 'efectivo' ? '💵 Efectivo' : formData.paymentMethod === 'bizum' ? '📱 Bizum' : '💳 Tarjeta'}
+                                                {formData.paymentMethod === 'efectivo' ? '💵 Efectivo' : '💳 Tarjeta'}
                                             </span>
                                         </div>
                                         {formData.notes && (
@@ -734,7 +716,7 @@ const OrderForm = ({ isOpen, onClose }) => {
                         {totalRaciones > 0 && step < 5 && (
                             <div className="flex items-center justify-between mb-3 text-sm">
                                 <span className="text-gray-500">
-                                    {totalPaellas} {totalPaellas === 1 ? 'tipo' : 'tipos'} · {totalRaciones} {totalRaciones === 1 ? 'ración' : 'raciones'}
+                                    {totalPaellas} {totalPaellas === 1 ? 'tipo' : 'tipos'} · {totalRaciones} {totalRaciones === 1 ? 'persona' : 'personas'}
                                 </span>
                                 <span className="font-bold text-primary text-lg">{totalPrice}€</span>
                             </div>
