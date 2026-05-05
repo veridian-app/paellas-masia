@@ -36,8 +36,8 @@ export const PAELLAS = [
     },
     {
         id: 'marisco',
-        src: '/images/paellas-nobg/marisco.png?v=4',
-        srcTransparent: '/Paellas quitar fondo/Marisco sin fondo.png?v=4',
+        src: '/images/paellas-nobg/marisco-nuevo.png?v=1',
+        srcTransparent: '/images/paellas-nobg/marisco-nuevo.png?v=1',
         title: 'Paella de Marisco',
         description: 'Todo el sabor del mar con gambas, cigalas, anillas de calamar y mejillones.',
         P3: 16, P25: 12,
