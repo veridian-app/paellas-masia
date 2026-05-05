@@ -57,7 +57,7 @@ const PaellaCard = ({ item, index, rotation, count, radiusX, radiusY, onSelect }
                         <img
                             src={item.src}
                             alt={item.title}
-                            className={`w-full h-full object-contain pointer-events-none select-none ${item.blend ? 'mix-blend-multiply' : ''}`}
+                            className={`w-[95%] h-[95%] object-contain pointer-events-none select-none drop-shadow-2xl ${item.blend ? 'mix-blend-multiply' : ''}`}
                         />
                     </motion.div>
                 </div>

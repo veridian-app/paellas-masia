@@ -73,11 +73,11 @@ const Products = ({ onOpenOrder }) => {
                             layout
                         >
                             {/* Image */}
-                            <div className="relative aspect-square overflow-hidden bg-gray-50/50 p-2 md:p-4">
+                            <div className="relative aspect-square overflow-hidden bg-gray-50/50 flex items-center justify-center">
                                 <img
                                     src={product.src}
                                     alt={product.title}
-                                    className={`w-full h-full object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-110 ${product.blend ? 'mix-blend-multiply' : ''}`}
+                                    className={`w-[90%] h-[90%] object-contain drop-shadow-2xl transition-transform duration-700 group-hover:scale-110 ${product.blend ? 'mix-blend-multiply' : ''}`}
                                     loading="lazy"
                                 />
                                 {/* Overlay gradient */}
