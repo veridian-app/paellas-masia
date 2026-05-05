@@ -135,8 +135,8 @@ export const PAELLAS = [
     },
     {
         id: 'vegetariana',
-        src: '/images/paellas-nobg/vegetariana-nuevo.png?v=1',
-        srcTransparent: '/images/paellas-nobg/vegetariana-nuevo.png?v=1',
+        src: '/images/paellas-nobg/vegetariana-nuevo.png?v=2',
+        srcTransparent: '/images/paellas-nobg/vegetariana-nuevo.png?v=2',
         title: 'Paella Vegetariana',
         description: 'Arroz con verduras de temporada de la huerta valenciana. 100% vegetal.',
         P3: 15, P25: 11,
