@@ -58,8 +58,8 @@ export const PAELLAS = [
     },
     {
         id: 'fideua-marisco',
-        src: '/images/paellas-nobg/marisco.png?v=4',
-        srcTransparent: '/Paellas quitar fondo/Marisco sin fondo.png?v=4',
+        src: '/images/paellas-nobg/fideua-marisco-nuevo.png?v=1',
+        srcTransparent: '/images/paellas-nobg/fideua-marisco-nuevo.png?v=1',
         title: 'Fideuá de Marisco',
         description: 'Auténtica fideuá con marisco de primera calidad y fideo fino.',
         P3: 18, P25: 12,
